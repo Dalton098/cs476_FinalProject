@@ -1,0 +1,90 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--External Libraries!-->
+<!--<script type="text/javascript" src="js/gl-matrix.js"></script>!-->
+<script type="text/javascript" src = "ggslac/jslibs/dat.gui.min.js"></script>
+<script type="text/javascript" src = "ggslac/jslibs/gl-matrix-min.js"></script>
+<script type="text/javascript" src="ggslac/jslibs/webgl-utils.js"></script>
+<script type="text/javascript" src="ggslac/jslibs/webgl-debug.js"></script>
+<script type="text/javascript" src="ammo.js"></script>
+
+<!--Our Scripts!-->
+<script src="ggslac/geometry/polymesh.js"></script>
+<script src="ggslac/geometry/basicmesh.js"></script>
+<script src="ggslac/geometry/primitives3d.js"></script>
+<script src="ggslac/geometry/cameras3d.js"></script>
+<script src="ggslac/shaders/shaders.js"></script>
+<script src="ggslac/utils/simpledraw.js"></script>
+<script src="ggslac/utils/blockloader.js"></script>
+<script src="ggslac/viewers/basecanvas.js"></script>
+<script src="ggslac/viewers/scenecanvas.js"></script>
+
+<script src="Particles3D.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+<table><tr><td>
+<canvas id="GLCanvas1" style="border: none;" width="800" height="600"></canvas>
+
+</td>
+</tr>
+<tr>
+    <td>
+        <table cellpadding>
+            <tr>
+                <td>
+                    <h3>Controls</h3>
+                    <ul>
+                        <li><b>Mouse</b>: Click and drag to look around</li>
+                        <li><b>W:</b> Forward</li>
+                        <li><b>S:</b> Backwards</li>
+                        <li><b>A:</b> Left</li>
+                        <li><b>D:</b> Right</li>
+                        <li><b>E:</b> Up</li>
+                        <li><b>C:</b> Down</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+</table>
+
+
+<script>
+    let glcanvas = document.getElementById("GLCanvas1");
+    glcanvas.addEventListener("contextmenu", function(e){ e.stopPropagation(); e.preventDefault(); return false; }); //Need this to disable the menu that pops up on right clicking
+    SceneCanvas(glcanvas, "ggslac/shaders/", "ggslac/meshes/");
+    glcanvas.repaintOnInteract = false;
+
+
+    // Load the sample scene as a default
+    particles = new Particles();
+    particles.randomlyInitSpheres(50);
+    particles.randomlyInitBoxes(50);
+    particles.addBox([0, 0, 0], [1000, 0.1, 1000], [0, 0, 0], 0, 0.9, "ground");
+    particles.cow = particles.addMesh("ggslac/meshes/cow.off", [0, 0, 0], [0, 0, 0], 10, 1, "green");
+    glcanvas.setupScene(particles.scene, glcanvas.clientWidth, glcanvas.clientHeight);
+    glcanvas.drawEdges = false;
+    glcanvas.updateMeshDrawings();
+    particles.setglcanvas(glcanvas);
+    particles.setupListeners();
+
+    function repaint() {
+        particles.animate();
+        glcanvas.repaint();
+        requestAnimationFrame(repaint);
+    }
+
+    requestAnimFrame(repaint);
+    
+    
+</script>
+
+</body>
+</html>
