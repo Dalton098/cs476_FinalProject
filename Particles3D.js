@@ -94,7 +94,7 @@ function Particles() {
     // solver (see Extras/BulletMultiThreaded)
     let solver = new Ammo.btSequentialImpulseConstraintSolver();
     let dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfig);
-    dynamicsWorld.setGravity(new Ammo.btVector3(0, -10, 0));
+    dynamicsWorld.setGravity(new Ammo.btVector3(0, 0, 0));
     this.dynamicsWorld = dynamicsWorld;
 
     /**
@@ -424,11 +424,18 @@ function Particles() {
                 vec3.scale(R, R, -1);
                 this.cow.body.applyCentralImpulse(new Ammo.btVector3(R[0], R[1], R[2]));
             }
+            if(this.keysDown[KEY_E]) {
+                this.cow.body.applyCentralImpulse(new Ammo.btVector3(0, 1, 0));
+            }
+            if(this.keysDown[KEY_C]) {
+                this.cow.body.applyCentralImpulse(new Ammo.btVector3(0, -1, 0));
+            }
+
         }
     }
 
     this.keyDown = function(evt) {
-        for (key of [KEY_W, KEY_S, KEY_D, KEY_A]) {
+        for (key of [KEY_W, KEY_S, KEY_D, KEY_A, KEY_E, KEY_C]) {
             if (evt.keyCode == key) {
                 this.keysDown[key] = true;
             }
@@ -436,7 +443,7 @@ function Particles() {
     }
 
     this.keyUp = function(evt) {
-        for (key of [KEY_W, KEY_S, KEY_D, KEY_A]) {
+        for (key of [KEY_W, KEY_S, KEY_D, KEY_A, KEY_E, KEY_C]) {
             if (evt.keyCode == key) {
                 this.keysDown[key] = false;
             }
@@ -466,7 +473,7 @@ function Particles() {
 
     this.setupListeners = function() {
         this.glcanvas.active = false; // Disable default listeners
-        this.keysDown = {KEY_W:false, KEY_S:false, KEY_A:false, KEY_D:false};
+        this.keysDown = {KEY_W:false, KEY_S:false, KEY_A:false, KEY_D:false, KEY_E:false, KEY_C:false};
         document.addEventListener('keydown', this.keyDown.bind(this), true);
         document.addEventListener('keyup', this.keyUp.bind(this), true);
         this.glcanvas.addEventListener('mousedown', this.makeClick.bind(this));
