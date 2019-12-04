@@ -64,7 +64,8 @@ function Particles() {
                         "kd":[1, 1, 1]
                     },
                     "green":{
-                        "kd":[0.0, 0.7, 0.0]
+                        "ka":[0.0, 0.7, 0.0],
+                        "kd":[1, 1, 1]
                     },
                     "white":{
                         "ka":[1, 1, 1],
@@ -402,28 +403,24 @@ function Particles() {
 
         }
         if (!(this.keysDown === undefined)) {
-            let res = this.getCameraVectors();
-            let T = res['T']; // Towards vector
-            let R = res['R']; // Right vector
-            vec3.scale(T, T, 2);
-            vec3.scale(R, R, 2);
+
             if (this.keysDown[KEY_W]) {
                 // Apply a central impulse in the forward direction of the camera
-                this.cow.body.setLinearVelocity(new Ammo.btVector3(0, 2, 0));
+                this.cow.body.getLinearVelocity().setY(2);
             }
             if (this.keysDown[KEY_S]) {
                 // Apply a central impulse in the reverse direction of the camera
-                vec3.scale(T, T, -1);
-                this.cow.body.setLinearVelocity(new Ammo.btVector3(0, -2, 0));
+                // vec3.scale(T, T, -1);
+                this.cow.body.getLinearVelocity().setY(-2);
             }
             if (this.keysDown[KEY_D]) {
                 // Apply a central impulse in the right direction of the camera
-                this.cow.body.setLinearVelocity(new Ammo.btVector3(2, 0, 0));
+                this.cow.body.getLinearVelocity().setX(2);
             }
             if (this.keysDown[KEY_A]) {
                 // Apply a central impulse in the left direction of the camera
-                vec3.scale(R, R, -1);
-                this.cow.body.setLinearVelocity(new Ammo.btVector3(-2, 0, 0));
+                // vec3.scale(R, R, -1);
+                this.cow.body.getLinearVelocity().setX(-2);
             }
             // if(this.keysDown[KEY_E]) {
             //     this.cow.body.setLinearVelocity(new Ammo.btVector3(0, 1, 0));
