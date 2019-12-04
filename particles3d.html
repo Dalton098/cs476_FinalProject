@@ -65,8 +65,8 @@
 
     // Load the sample scene as a default
     particles = new Particles();
-    particles.randomlyInitSpheres(50);
-    particles.randomlyInitBoxes(50);
+    // particles.randomlyInitSpheres(50);
+    // particles.randomlyInitBoxes(50);
     particles.addBox([0, 0, 0], [1000, 0.1, 1000], [0, 0, 0], 0, 0.9, "ground");
     particles.cow = particles.addMesh("ggslac/meshes/cow.off", [0, 0, 0], [0, 0, 0], 10, 1, "green");
     glcanvas.setupScene(particles.scene, glcanvas.clientWidth, glcanvas.clientHeight);
