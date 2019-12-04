@@ -446,14 +446,13 @@ function Particles() {
                 this.cow.body.getLinearVelocity().setX(2);
                 this.cow.body.getLinearVelocity().setY(-2);
             }
-            // if(this.keysDown[KEY_E]) {
-            //     this.cow.body.setLinearVelocity(new Ammo.btVector3(0, 1, 0));
-            // }
-            // if(this.keysDown[KEY_C]) {
-            //     this.cow.body.setLinearVelocity(new Ammo.btVector3(0, -1, 0));
-            // }
 
         }
+
+        if(!this.keysDown[KEY_W] && !this.keysDown[KEY_S] && !this.keysDown[KEY_A] && !this.keysDown[KEY_D]) {
+            this.cow.body.setLinearVelocity(new Ammo.btVector3(0, 0, 0));
+        }
+
     }
 
     this.keyDown = function(evt) {
