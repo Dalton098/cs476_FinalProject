@@ -398,7 +398,8 @@ function Particles() {
         if (!(this.glcanvas === null)) {
             // Make the camera in world coordinates 4 units in z in front of the cow
             // and 2 units above the cow
-            vec3.add(this.glcanvas.camera.pos, this.cow.pos, vec3.fromValues(0, 2, 4));
+            this.glcanvas.camera.pos = vec3.fromValues(0, 2, 5);
+
         }
         if (!(this.keysDown === undefined)) {
             let res = this.getCameraVectors();
