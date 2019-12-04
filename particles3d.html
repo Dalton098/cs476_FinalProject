@@ -67,9 +67,14 @@
     particles = new Particles();
     // particles.randomlyInitSpheres(50);
     // particles.randomlyInitBoxes(50);
-    particles.addBox([0, 0, 0], [1000, 0.1, 1000], [0, 0, 0], 0, 0.9, "ground");
-    particles.cow = particles.addMesh("ggslac/meshes/cow.off", [0, 0, 0], [0, 0, 0], 1, 0, "green");
-    particles.groudon = particles.addMesh("ggslac/meshes/Groudon.off", [0, 0, -10], [0, 0, 0], 10, 0, "redambient");
+    particles.addBox([0, 0, 0], [1000, 0.1, 1000], [0, 0, 0], 0, 1, "ground");
+    particles.cow = particles.addMesh("ggslac/meshes/cow.off", [0, 1, -1], [0, 0, 0], 0.001, 1, "green");
+    particles.groudon = particles.addMesh("ggslac/meshes/Groudon.off", [0, 4, -10], [0, 0, 0], 1, 1, "redambient");
+    particles.addBox([0,0,1],[0.5,1,0.5],[0,0,0], 0, 0.5, "white");
+    particles.addBox([1.25,0,1],[0.5,1,0.5],[0,0,0], 0, 0.5, "white");
+    particles.addBox([2.5,0,1],[0.5,1,0.5],[0,0,0], 0, 0.5, "white");
+    particles.addBox([-1.25,0,1],[0.5,1,0.5],[0,0,0], 0, 0.5, "white");
+    particles.addBox([-2.5,0,1],[0.5,1,0.5],[0,0,0], 0, 0.5, "white");
     glcanvas.setupScene(particles.scene, glcanvas.clientWidth, glcanvas.clientHeight);
     glcanvas.drawEdges = false;
     glcanvas.updateMeshDrawings();
