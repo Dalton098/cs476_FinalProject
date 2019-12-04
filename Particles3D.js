@@ -402,25 +402,49 @@ function Particles() {
             this.glcanvas.camera.pos = vec3.fromValues(0, 2, 5);
 
         }
+
+        this.cow.body.setAngularVelocity(new Ammo.btVector3(0, 0, 0))
         if (!(this.keysDown === undefined)) {
 
             if (this.keysDown[KEY_W]) {
                 // Apply a central impulse in the forward direction of the camera
                 this.cow.body.getLinearVelocity().setY(2);
+                this.cow.body.getLinearVelocity().setX(0);
             }
             if (this.keysDown[KEY_S]) {
                 // Apply a central impulse in the reverse direction of the camera
-                // vec3.scale(T, T, -1);
                 this.cow.body.getLinearVelocity().setY(-2);
+                this.cow.body.getLinearVelocity().setX(0);
             }
             if (this.keysDown[KEY_D]) {
                 // Apply a central impulse in the right direction of the camera
                 this.cow.body.getLinearVelocity().setX(2);
+                this.cow.body.getLinearVelocity().setY(0);
             }
             if (this.keysDown[KEY_A]) {
                 // Apply a central impulse in the left direction of the camera
-                // vec3.scale(R, R, -1);
                 this.cow.body.getLinearVelocity().setX(-2);
+                this.cow.body.getLinearVelocity().setY(0);
+            }
+            if (this.keysDown[KEY_A] && this.keysDown[KEY_W]) {
+                // Apply a central impulse in the left direction of the camera
+                this.cow.body.getLinearVelocity().setX(-2);
+                this.cow.body.getLinearVelocity().setY(2);
+            }
+            if (this.keysDown[KEY_A] && this.keysDown[KEY_S]) {
+                // Apply a central impulse in the left direction of the camera
+                this.cow.body.getLinearVelocity().setX(-2);
+                this.cow.body.getLinearVelocity().setY(-2);
+            }
+            if (this.keysDown[KEY_D] && this.keysDown[KEY_W]) {
+                // Apply a central impulse in the left direction of the camera
+                this.cow.body.getLinearVelocity().setX(2);
+                this.cow.body.getLinearVelocity().setY(2);
+            }
+            if (this.keysDown[KEY_D] && this.keysDown[KEY_S]) {
+                // Apply a central impulse in the left direction of the camera
+                this.cow.body.getLinearVelocity().setX(2);
+                this.cow.body.getLinearVelocity().setY(-2);
             }
             // if(this.keysDown[KEY_E]) {
             //     this.cow.body.setLinearVelocity(new Ammo.btVector3(0, 1, 0));
