@@ -12,8 +12,6 @@ const KEY_W = 87;
 const KEY_S = 83;
 const KEY_A = 65;
 const KEY_D = 68;
-const KEY_C = 67;
-const KEY_E = 69;
 
 /**
  * Update the glMatrix transform field of a shape based on 
