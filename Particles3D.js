@@ -456,7 +456,7 @@ function Particles() {
     }
 
     this.keyDown = function(evt) {
-        for (key of [KEY_W, KEY_S, KEY_D, KEY_A, KEY_E, KEY_C]) {
+        for (key of [KEY_W, KEY_S, KEY_D, KEY_A]) {
             if (evt.keyCode == key) {
                 this.keysDown[key] = true;
             }
@@ -464,7 +464,7 @@ function Particles() {
     }
 
     this.keyUp = function(evt) {
-        for (key of [KEY_W, KEY_S, KEY_D, KEY_A, KEY_E, KEY_C]) {
+        for (key of [KEY_W, KEY_S, KEY_D, KEY_A]) {
             if (evt.keyCode == key) {
                 this.keysDown[key] = false;
             }
@@ -494,7 +494,7 @@ function Particles() {
 
     this.setupListeners = function() {
         this.glcanvas.active = false; // Disable default listeners
-        this.keysDown = {KEY_W:false, KEY_S:false, KEY_A:false, KEY_D:false, KEY_E:false, KEY_C:false};
+        this.keysDown = {KEY_W:false, KEY_S:false, KEY_A:false, KEY_D:false};
         document.addEventListener('keydown', this.keyDown.bind(this), true);
         document.addEventListener('keyup', this.keyUp.bind(this), true);
         this.glcanvas.addEventListener('mousedown', this.makeClick.bind(this));
