@@ -422,8 +422,8 @@ function Particles() {
                 vec3.scaleAndAdd(pos, this.glcanvas.camera.pos, U, 0);
                 vec3.scaleAndAdd(pos, pos, T, 2);
 
-                pos = [0, 5.5, -5];
-                let sphere = this.addSphere(pos, 0.2, [0, 0, 0], 1, 0.5, "blueambient");
+                pos = [0, 5.5, -10];
+                let sphere = this.addSphere(pos, 0.2, [0, 0, 0], 1, 0.1, "blueambient");
 
                 var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
                 var plusOrMinus2 = Math.random() < 0.5 ? -1 : 1;
