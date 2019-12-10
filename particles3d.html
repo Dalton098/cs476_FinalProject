@@ -23,6 +23,9 @@
 
 <script src="Particles3D.js"></script>
 
+<audio id="win" src="win.mp3" preload="auto"></audio>
+
+
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
@@ -84,6 +87,7 @@
     function repaint() {
 
         if(particles.winCon){
+            document.getElementById('win').play();
             alert('You Win');
         }
         timeNow = new Date().getTime();
