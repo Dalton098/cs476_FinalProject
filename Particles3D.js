@@ -394,6 +394,39 @@ function Particles() {
      * via a transformation matrix
      */
     this.animate = function (timeDiff) {
+
+        // shooting from groudon
+        if (timeDiff % 5 === 0 && timeDiff != 0) {
+
+            if (!isShot1) {
+
+                let pos = vec3.create();
+                let res = this.getCameraVectors();
+                let T = res['T'];
+                let U = res['U'];
+                vec3.scaleAndAdd(pos, this.glcanvas.camera.pos, U, 0);
+                vec3.scaleAndAdd(pos, pos, T, 2);
+
+                pos = [0, 5.5, -5];
+                let sphere = this.addSphere(pos, 0.2, [0, 0, 0], 1, 0.5, "blueambient");
+
+                var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+                var plusOrMinus2 = Math.random() < 0.5 ? -1 : 1;
+                Ran = [Math.random() * plusOrMinus, Math.random() * plusOrMinus2, -1];
+                vec3.scale(Ran, Ran, -10);
+
+                sphere.body.setLinearVelocity(new Ammo.btVector3(Ran[0], Ran[1], Ran[2]));
+                this.glcanvas.parseNode(sphere);
+
+                isShot1 = true;
+            }
+
+        } else {
+            isShot1 = false;
+        }
+
+
+
         let thisTime = (new Date()).getTime();
         let dt = (thisTime - this.lastTime) / 1000.0; // Change in time in seconds
         this.time += dt;
@@ -461,36 +494,6 @@ function Particles() {
             this.cow.body.setLinearVelocity(new Ammo.btVector3(0, 0, 0));
         }
 
-        // shooting from groudon
-        if (timeDiff % 5 === 0 && timeDiff != 0) {
-
-            if (!isShot1) {
-
-                let pos = vec3.create();
-                let res = this.getCameraVectors();
-                let T = res['T'];
-                let U = res['U'];
-                vec3.scaleAndAdd(pos, this.glcanvas.camera.pos, U, 0);
-                vec3.scaleAndAdd(pos, pos, T, 2);
-
-                pos = [0, 5.5, -5];
-
-                let sphere = this.addSphere(pos, 0.2, [0, 0, 0], 1, 0.5, "blueambient");
-                var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-                var plusOrMinus2 = Math.random() < 0.5 ? -1 : 1;
-
-                Ran = [Math.random() * plusOrMinus, Math.random() * plusOrMinus2, -1];
-                vec3.scale(Ran, Ran, -10);
-
-                sphere.body.setLinearVelocity(new Ammo.btVector3(Ran[0], Ran[1], Ran[2]));
-                this.glcanvas.parseNode(sphere);
-
-                isShot1 = true;
-            }
-
-        } else {
-            isShot1 = false;
-        }
 
     }
 
