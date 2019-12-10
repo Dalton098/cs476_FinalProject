@@ -410,6 +410,14 @@ function Particles() {
      */
     this.animate = function (timeDiff) {
 
+        this.winCon = false
+
+        if(particles.groudon.body.getLinearVelocity().x() != 0 || particles.groudon.body.getLinearVelocity().y()
+        || particles.groudon.body.getLinearVelocity().z()){
+            this.winCon = true
+        }
+
+
         // shooting from groudon
         if (timeDiff % 2 === 0 && timeDiff != 0) {
 

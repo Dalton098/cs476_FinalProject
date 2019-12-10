@@ -82,6 +82,10 @@
     particles.setupListeners();
 
     function repaint() {
+
+        if(particles.winCon){
+            alert('You Win');
+        }
         timeNow = new Date().getTime();
 
         timeDiff = Math.trunc((timeNow - timeStart)/1000.0);
