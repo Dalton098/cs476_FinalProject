@@ -63,6 +63,8 @@
     glcanvas.repaintOnInteract = false;
 
 
+    var timeStart = new Date().getTime();
+
     // Load the sample scene as a default
     particles = new Particles();
     // particles.randomlyInitSpheres(50);
@@ -82,7 +84,11 @@
     particles.setupListeners();
 
     function repaint() {
-        particles.animate();
+        timeNow = new Date().getTime();
+
+        timeDiff = Math.trunc((timeNow - timeStart)/1000.0);
+
+        particles.animate(timeDiff);
         glcanvas.repaint();
         requestAnimationFrame(repaint);
     }

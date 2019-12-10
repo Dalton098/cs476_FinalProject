@@ -13,6 +13,9 @@ const KEY_S = 83;
 const KEY_A = 65;
 const KEY_D = 68;
 
+var isShot1 = false;
+var isShot2 = false;
+
 /**
  * Update the glMatrix transform field of a shape based on 
  * bullet's internal transformation state
@@ -44,45 +47,46 @@ function updateTransformation(shape) {
 
 function Particles() {
     // Step 1: Initialize scene for rendering
-    this.scene = {"children":[],
-                "cameras":[
-                {
-                    "pos": [0.00, 1.50, 5.00],
-                    "rot": [0.00, 0.00, 0.00, 1.00],
-                    "fovy": 1.0
-                }],
-                "lights":[],
-                "materials":{
-                    "redambient":{
-                        "ka":[0.7, 0.0, 0.0],
-                        "kd":[1, 1, 1]
-                    },
-                    "blueambient":{
-                        "ka":[0.0, 0.0, 0.7],
-                        "kd":[1, 1, 1]
-                    },
-                    "green":{
-                        "ka":[0.0, 0.7, 0.0],
-                        "kd":[1, 1, 1]
-                    },
-                    "white":{
-                        "ka":[1, 1, 1],
-                        "kd":[1, 1, 1]
-                    },
-                    "ground":{
-                        "ka":[0.2, 0.2, 0.2]
-                    }
-                }          
+    this.scene = {
+        "children": [],
+        "cameras": [
+            {
+                "pos": [0.00, 1.50, 5.00],
+                "rot": [0.00, 0.00, 0.00, 1.00],
+                "fovy": 1.0
+            }],
+        "lights": [],
+        "materials": {
+            "redambient": {
+                "ka": [0.7, 0.0, 0.0],
+                "kd": [1, 1, 1]
+            },
+            "blueambient": {
+                "ka": [0.0, 0.0, 0.7],
+                "kd": [1, 1, 1]
+            },
+            "green": {
+                "ka": [0.0, 0.7, 0.0],
+                "kd": [1, 1, 1]
+            },
+            "white": {
+                "ka": [1, 1, 1],
+                "kd": [1, 1, 1]
+            },
+            "ground": {
+                "ka": [0.2, 0.2, 0.2]
+            }
+        }
     };
 
     this.glcanvas = null;
-    this.setglcanvas = function(glcanvas) {
+    this.setglcanvas = function (glcanvas) {
         this.glcanvas = glcanvas;
     }
 
     // Step 2: Initialize physics engine
     // Collision configuration contains default setup for memory, collisions setup
-    let collisionConfig = new Ammo.btDefaultCollisionConfiguration(); 
+    let collisionConfig = new Ammo.btDefaultCollisionConfiguration();
     // Use the default collision dispatcher.  For parallel processing you can use
     // a different dispatcher (see Extras/BulletMultiThread)
     let dispatcher = new Ammo.btCollisionDispatcher(collisionConfig);
@@ -113,7 +117,7 @@ function Particles() {
      * 
      * @returns{object} The created box object
      */
-    this.addBox = function(pos, scale, velocity, mass, restitution, material, rotation, isHidden) {
+    this.addBox = function (pos, scale, velocity, mass, restitution, material, rotation, isHidden) {
         if (material === undefined) {
             material = "default";
         }
@@ -125,30 +129,32 @@ function Particles() {
         }
         // Step 1: Setup scene graph entry for rendering
         let box = {
-            "scale":scale,
-            "pos":pos,
-            "velocity":velocity,
-            "mass":mass,
-            "shapes":[
-                {"type":"box",
-                "material":material,
-                "hidden":isHidden}
+            "scale": scale,
+            "pos": pos,
+            "velocity": velocity,
+            "mass": mass,
+            "shapes": [
+                {
+                    "type": "box",
+                    "material": material,
+                    "hidden": isHidden
+                }
             ]
         }
         this.scene.children.push(box);
 
-        const boxShape = new Ammo.btBoxShape(new Ammo.btVector3(scale[0]/2, scale[1]/2, scale[2]/2));
+        const boxShape = new Ammo.btBoxShape(new Ammo.btVector3(scale[0] / 2, scale[1] / 2, scale[2] / 2));
         const ptransform = new Ammo.btTransform();
         ptransform.setIdentity();
-        ptransform.setOrigin(new Ammo.btVector3(pos[0], pos[1], pos[2]));	
+        ptransform.setOrigin(new Ammo.btVector3(pos[0], pos[1], pos[2]));
         ptransform.setRotation(rotation[0], rotation[1], rotation[2], rotation[3]);
-        box.ptransform = ptransform; 
+        box.ptransform = ptransform;
         updateTransformation(box);
         const isDynamic = (mass != 0);
         let localInertia = null;
         if (isDynamic) {
             localInertia = new Ammo.btVector3(velocity[0], velocity[1], velocity[2]);
-            boxShape.calculateLocalInertia(mass,localInertia);
+            boxShape.calculateLocalInertia(mass, localInertia);
         }
         else {
             localInertia = new Ammo.btVector3(0, 0, 0);
@@ -162,7 +168,7 @@ function Particles() {
         this.dynamicsWorld.addRigidBody(box.body);
         return box;
     }
-    
+
     /**
      * Add a sphere to the scene by both creating an entry in the scene graph
      * and initializing information for the physics engine
@@ -179,7 +185,7 @@ function Particles() {
      * 
      * @returns {object} The created sphere object
      */
-    this.addSphere = function(pos, radius, velocity, mass, restitution, material, isLight, isHidden) {
+    this.addSphere = function (pos, radius, velocity, mass, restitution, material, isLight, isHidden) {
         if (material === undefined) {
             material = "default";
         }
@@ -192,15 +198,17 @@ function Particles() {
 
         // Step 1: Setup scene graph entry for rendering
         let sphere = {
-            "scale":[radius, radius, radius],
-            "pos":pos,
-            "radius":radius,
-            "velocity":velocity,
-            "mass":mass,
-            "shapes":[
-                {"type":"sphere",
-                "material":material,
-                "hidden":isHidden}
+            "scale": [radius, radius, radius],
+            "pos": pos,
+            "radius": radius,
+            "velocity": velocity,
+            "mass": mass,
+            "shapes": [
+                {
+                    "type": "sphere",
+                    "material": material,
+                    "hidden": isHidden
+                }
             ]
         }
         this.scene.children.push(sphere);
@@ -210,7 +218,7 @@ function Particles() {
             sphere.atten = [1, 0, 0];
             this.scene.lights.push(sphere);
         }
-        
+
         // Step 2: Setup ammo.js physics engine entry
         const colShape = new Ammo.btSphereShape(radius);
         const localInertia = new Ammo.btVector3(velocity[0], velocity[1], velocity[2]);
@@ -224,7 +232,7 @@ function Particles() {
         const motionState = new Ammo.btDefaultMotionState(ptransform);
         const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, colShape, localInertia);
         // The final rigid body object
-        sphere.body = new Ammo.btRigidBody(rbInfo); 
+        sphere.body = new Ammo.btRigidBody(rbInfo);
         sphere.body.setRestitution(restitution);
         // Finally, add the rigid body to the simulator
         this.dynamicsWorld.addRigidBody(sphere.body);
@@ -235,11 +243,11 @@ function Particles() {
      * Add spheres with a random initial position, radius, initial velocity, mass,
      * and coefficient of restitution
      */
-    this.randomlyInitSpheres = function(N) {
+    this.randomlyInitSpheres = function (N) {
         for (let i = 0; i < N; i++) {
-            let pos = [Math.random()*10-5, Math.random()*10, Math.random()*10-5];
-            let radius = 0.5*Math.random();
-            let velocity = [Math.random()*0.1, Math.random()*0.1, Math.random()*0.1];
+            let pos = [Math.random() * 10 - 5, Math.random() * 10, Math.random() * 10 - 5];
+            let radius = 0.5 * Math.random();
+            let velocity = [Math.random() * 0.1, Math.random() * 0.1, Math.random() * 0.1];
             const mass = Math.random();
             const restitution = Math.random(); // How bouncy the sphere is (between 0 and 1)
             if (i < 4) {
@@ -262,7 +270,7 @@ function Particles() {
      * @param {string} material Material to use
      * @param {boolean} isLight Should it also be emitting light?
      */
-    this.addMesh = function(filename, pos, velocity, mass, restitution, material, isLight, isHidden) {
+    this.addMesh = function (filename, pos, velocity, mass, restitution, material, isLight, isHidden) {
         if (isLight === undefined) {
             isLight = false;
         }
@@ -295,15 +303,17 @@ function Particles() {
 
         // Step 2: Initialize the scene graph entry
         let shape = {
-            "scale":[1, 1, 1],
-            "pos":pos,
-            "velocity":velocity,
-            "mass":mass,
-            "shapes":[
-                {"type":"mesh",
-                "filename":filename,
-                "material":material,
-                "hidden":isHidden}
+            "scale": [1, 1, 1],
+            "pos": pos,
+            "velocity": velocity,
+            "mass": mass,
+            "shapes": [
+                {
+                    "type": "mesh",
+                    "filename": filename,
+                    "material": material,
+                    "hidden": isHidden
+                }
             ]
         };
         this.scene.children.push(shape);
@@ -313,7 +323,7 @@ function Particles() {
             shape.atten = [1, 0, 0];
             this.scene.lights.push(shape);
         }
-        
+
         // Step 3: Setup ammo.js physics engine entry
         const localInertia = new Ammo.btVector3(velocity[0], velocity[1], velocity[2]);
         colShape.calculateLocalInertia(mass, localInertia);
@@ -326,7 +336,7 @@ function Particles() {
         const motionState = new Ammo.btDefaultMotionState(ptransform);
         const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, colShape, localInertia);
         // The final rigid body object
-        shape.body = new Ammo.btRigidBody(rbInfo); 
+        shape.body = new Ammo.btRigidBody(rbInfo);
         shape.body.setRestitution(restitution);
         // Finally, add the rigid body to the simulator
         this.dynamicsWorld.addRigidBody(shape.body);
@@ -338,11 +348,11 @@ function Particles() {
      * Add boxes with a random initial position, dimensions, initial velocity, mass,
      * coefficient of restitution, and orientation
      */
-    this.randomlyInitBoxes = function(N) {
+    this.randomlyInitBoxes = function (N) {
         for (let i = 0; i < N; i++) {
-            let pos = [Math.random()*10-5, Math.random()*10, Math.random()*10-5];
-            let scale = [0.5*Math.random(), 0.5*Math.random(), 0.5*Math.random()];
-            let velocity = [Math.random()*0.1, Math.random()*0.1, Math.random()*0.1];
+            let pos = [Math.random() * 10 - 5, Math.random() * 10, Math.random() * 10 - 5];
+            let scale = [0.5 * Math.random(), 0.5 * Math.random(), 0.5 * Math.random()];
+            let velocity = [Math.random() * 0.1, Math.random() * 0.1, Math.random() * 0.1];
             const mass = Math.random();
             const restitution = Math.random();
             let rotation = vec4.create();
@@ -351,10 +361,10 @@ function Particles() {
         }
     }
 
-    this.addCameraSphere = function() {
-        let pos = [Math.random()*10-5, Math.random()*10, Math.random()*10-5];
-        let radius = 0.5*Math.random();
-        let velocity = [Math.random()*0.1, Math.random()*0.1, Math.random()*0.1];
+    this.addCameraSphere = function () {
+        let pos = [Math.random() * 10 - 5, Math.random() * 10, Math.random() * 10 - 5];
+        let radius = 0.5 * Math.random();
+        let velocity = [Math.random() * 0.1, Math.random() * 0.1, Math.random() * 0.1];
         const mass = Math.random();
         const restitution = Math.random(); // How bouncy the sphere is (between 0 and 1)
         this.camerasphere = this.addSphere(pos, radius, velocity, mass, restitution, "white");
@@ -366,14 +376,14 @@ function Particles() {
     /**
      * A helper function to extract vectors from the camera
      */
-    this.getCameraVectors = function() {
+    this.getCameraVectors = function () {
         let T = vec3.create();
         let R = vec3.create();
         vec3.copy(R, this.glcanvas.camera.right);
         let U = vec3.create();
         vec3.copy(U, this.glcanvas.camera.up);
         vec3.cross(T, U, R);
-        return {'T':T, 'U':U, 'R':R};
+        return { 'T': T, 'U': U, 'R': R };
     }
 
     /**
@@ -383,9 +393,9 @@ function Particles() {
      * engine, and send it over to the rendering engine (ggslac)
      * via a transformation matrix
      */
-    this.animate = function() {
+    this.animate = function (timeDiff) {
         let thisTime = (new Date()).getTime();
-        let dt = (thisTime - this.lastTime)/1000.0; // Change in time in seconds
+        let dt = (thisTime - this.lastTime) / 1000.0; // Change in time in seconds
         this.time += dt;
         this.lastTime = thisTime;
         this.dynamicsWorld.stepSimulation(dt, 10);
@@ -447,13 +457,44 @@ function Particles() {
 
         }
 
-        if(!this.keysDown[KEY_W] && !this.keysDown[KEY_S] && !this.keysDown[KEY_A] && !this.keysDown[KEY_D]) {
+        if (!this.keysDown[KEY_W] && !this.keysDown[KEY_S] && !this.keysDown[KEY_A] && !this.keysDown[KEY_D]) {
             this.cow.body.setLinearVelocity(new Ammo.btVector3(0, 0, 0));
+        }
+
+        // shooting from groudon
+        if (timeDiff % 5 === 0 && timeDiff != 0) {
+
+            if (!isShot1) {
+
+                let pos = vec3.create();
+                let res = this.getCameraVectors();
+                let T = res['T'];
+                let U = res['U'];
+                vec3.scaleAndAdd(pos, this.glcanvas.camera.pos, U, 0);
+                vec3.scaleAndAdd(pos, pos, T, 2);
+
+                pos = [0, 5.5, -5];
+
+                let sphere = this.addSphere(pos, 0.2, [0, 0, 0], 1, 0.5, "blueambient");
+                var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+                var plusOrMinus2 = Math.random() < 0.5 ? -1 : 1;
+
+                Ran = [Math.random() * plusOrMinus, Math.random() * plusOrMinus2, -1];
+                vec3.scale(Ran, Ran, -10);
+
+                sphere.body.setLinearVelocity(new Ammo.btVector3(Ran[0], Ran[1], Ran[2]));
+                this.glcanvas.parseNode(sphere);
+
+                isShot1 = true;
+            }
+
+        } else {
+            isShot1 = false;
         }
 
     }
 
-    this.keyDown = function(evt) {
+    this.keyDown = function (evt) {
         for (key of [KEY_W, KEY_S, KEY_D, KEY_A]) {
             if (evt.keyCode == key) {
                 this.keysDown[key] = true;
@@ -461,15 +502,15 @@ function Particles() {
         }
     }
 
-    this.keyUp = function(evt) {
+    this.keyUp = function (evt) {
         for (key of [KEY_W, KEY_S, KEY_D, KEY_A]) {
             if (evt.keyCode == key) {
                 this.keysDown[key] = false;
             }
         }
-    }  
+    }
 
-    this.makeClick = function(evt) {
+    this.makeClick = function (evt) {
         let clickType = "LEFT";
         evt.preventDefault();
         if (evt.which) {
@@ -480,34 +521,12 @@ function Particles() {
             if (evt.button == 2) clickType = "RIGHT";
             if (evt.button == 4) clickType = "MIDDLE";
         }
-        if (clickType == "RIGHT") {
-            let pos = vec3.create();
-            let res = this.getCameraVectors();
-            let T = res['T']; // Towards vector
-            let U = res['U']; // Up vector
-            vec3.scaleAndAdd(pos, this.glcanvas.camera.pos, U, 0);
-            vec3.scaleAndAdd(pos, pos, T, 2);
 
-            pos = [0, 4, -5];
-            let sphere = this.addSphere(pos, 0.2, [0, 0, 0], 1, 0.5, "blueambient");
-            // Velocity is 40 units / second in the camera's towards direction
-            vec3.scale(T, T, -10);
-            var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-            var plusOrMinus2 = Math.random() < 0.5 ? -1 : 1;
-            var plusOrMinus3 = Math.random() < 0.5 ? -1 : 1;
-
-
-            Ran = [Math.random() * plusOrMinus,Math.random() * plusOrMinus2, -1];
-            vec3.scale(Ran, Ran, -10);
-            
-            sphere.body.setLinearVelocity(new Ammo.btVector3(Ran[0], Ran[1], Ran[2]));
-            this.glcanvas.parseNode(sphere);
-        }
     }
 
-    this.setupListeners = function() {
+    this.setupListeners = function () {
         this.glcanvas.active = false; // Disable default listeners
-        this.keysDown = {KEY_W:false, KEY_S:false, KEY_A:false, KEY_D:false};
+        this.keysDown = { KEY_W: false, KEY_S: false, KEY_A: false, KEY_D: false };
         document.addEventListener('keydown', this.keyDown.bind(this), true);
         document.addEventListener('keyup', this.keyUp.bind(this), true);
         this.glcanvas.addEventListener('mousedown', this.makeClick.bind(this));
