@@ -423,7 +423,7 @@ function Particles() {
                 vec3.scaleAndAdd(pos, pos, T, 2);
 
                 pos = [0, 6, -10];
-                let sphere = this.addSphere(pos, 0.6, [0, 0, 0], 0.1, 0, "blueambient");
+                let sphere = this.addSphere(pos, 0.6, [0, 0, 0], 0.1, 0.1, "blueambient");
 
                 var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
                 var plusOrMinus2 = Math.random() < 0.5 ? -1 : 1;
