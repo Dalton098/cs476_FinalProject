@@ -483,10 +483,17 @@ function Particles() {
         if (clickType == "RIGHT") {
             let pos = vec3.create();
             let res = this.getCameraVectors();
-            vec3.scaleAndAdd(pos, pos, res['U'], 10);
-            console.log("Adding sphere");
-            console.log(pos);
-            this.addSphere(pos, 0.2, [0, 0, 0], 0.1, 0.5, "blueambient");
+            let T = res['T']; // Towards vector
+            let U = res['U']; // Up vector
+            vec3.scaleAndAdd(pos, this.glcanvas.camera.pos, U, 0);
+            vec3.scaleAndAdd(pos, pos, T, 2);
+
+            pos = [0, 4, -5];
+            let sphere = this.addSphere(pos, 0.2, [0, 0, 0], 1, 0.5, "blueambient");
+            // Velocity is 40 units / second in the camera's towards direction
+            vec3.scale(T, T, -10);
+            sphere.body.setLinearVelocity(new Ammo.btVector3(T[0], T[1], T[2]));
+            this.glcanvas.parseNode(sphere);
         }
     }
 
