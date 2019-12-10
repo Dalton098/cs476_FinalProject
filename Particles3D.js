@@ -262,16 +262,30 @@ function Particles() {
      * @param {string} material Material to use
      * @param {boolean} isLight Should it also be emitting light?
      */
-    this.addMesh = function(filename, pos, velocity, mass, restitution, material, isLight, isHidden) {
+    this.addMesh = function(filename, pos, velocity, mass, restitution, material, rotation, isLight, isHidden) {
         if (isLight === undefined) {
             isLight = false;
+        }
+        if (rotation === undefined) {
+            rotation = [0, 0, 0, 1];
         }
         if (isHidden === undefined) {
             isHidden = false;
         }
+
+        /*
+        mesh = new BasicMesh();
+        const ptransform = new Ammo.btTransform();
+        ptransform.setIdentity();
+        ptransform.setOrigin(new Ammo.btVector3(pos[0], pos[1], pos[2]));	
+        ptransform.setRotation(rotation[0], rotation[1], rotation[2], rotation[3]);
+        mesh.ptransform = ptransform; 
+        updateTransformation(mesh);
+        */
+
         // Step 1: Setup the convex hull collision shape
         // for the mesh
-        mesh = new BasicMesh();
+        
         let lines = BlockLoader.loadTxt(filename);
         let res = loadFileFromLines(lines.split("\n"));
         let vertices = res.vertices;
@@ -321,6 +335,7 @@ function Particles() {
         const ptransform = new Ammo.btTransform();
         ptransform.setIdentity();
         ptransform.setOrigin(new Ammo.btVector3(pos[0], pos[1], pos[2]));
+        ptransform.setRotation(new Ammo.btQuaternion(rotation[0], rotation[1], rotation[2], rotation[3]));
         shape.ptransform = ptransform;
         updateTransformation(shape);
         const motionState = new Ammo.btDefaultMotionState(ptransform);
