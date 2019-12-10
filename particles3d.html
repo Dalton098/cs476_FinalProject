@@ -1,109 +1,113 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<!--External Libraries!-->
-<!--<script type="text/javascript" src="js/gl-matrix.js"></script>!-->
-<script type="text/javascript" src = "ggslac/jslibs/dat.gui.min.js"></script>
-<script type="text/javascript" src = "ggslac/jslibs/gl-matrix-min.js"></script>
-<script type="text/javascript" src="ggslac/jslibs/webgl-utils.js"></script>
-<script type="text/javascript" src="ggslac/jslibs/webgl-debug.js"></script>
-<script type="text/javascript" src="ammo.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--External Libraries!-->
+    <!--<script type="text/javascript" src="js/gl-matrix.js"></script>!-->
+    <script type="text/javascript" src="ggslac/jslibs/dat.gui.min.js"></script>
+    <script type="text/javascript" src="ggslac/jslibs/gl-matrix-min.js"></script>
+    <script type="text/javascript" src="ggslac/jslibs/webgl-utils.js"></script>
+    <script type="text/javascript" src="ggslac/jslibs/webgl-debug.js"></script>
+    <script type="text/javascript" src="ammo.js"></script>
 
-<!--Our Scripts!-->
-<script src="ggslac/geometry/polymesh.js"></script>
-<script src="ggslac/geometry/basicmesh.js"></script>
-<script src="ggslac/geometry/primitives3d.js"></script>
-<script src="ggslac/geometry/cameras3d.js"></script>
-<script src="ggslac/shaders/shaders.js"></script>
-<script src="ggslac/utils/simpledraw.js"></script>
-<script src="ggslac/utils/blockloader.js"></script>
-<script src="ggslac/viewers/basecanvas.js"></script>
-<script src="ggslac/viewers/scenecanvas.js"></script>
+    <!--Our Scripts!-->
+    <script src="ggslac/geometry/polymesh.js"></script>
+    <script src="ggslac/geometry/basicmesh.js"></script>
+    <script src="ggslac/geometry/primitives3d.js"></script>
+    <script src="ggslac/geometry/cameras3d.js"></script>
+    <script src="ggslac/shaders/shaders.js"></script>
+    <script src="ggslac/utils/simpledraw.js"></script>
+    <script src="ggslac/utils/blockloader.js"></script>
+    <script src="ggslac/viewers/basecanvas.js"></script>
+    <script src="ggslac/viewers/scenecanvas.js"></script>
 
-<script src="Particles3D.js"></script>
+    <script src="Particles3D.js"></script>
 
-<audio id="win" src="win.mp3" preload="auto"></audio>
+    <audio id="win" src="win.mp3" preload="auto"></audio>
 
 
-<link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
 
-<table><tr><td>
-<canvas id="GLCanvas1" style="border: none;" width="800" height="600"></canvas>
+    <table>
+        <tr>
+            <td>
+                <canvas id="GLCanvas1" style="border: none;" width="800" height="600"></canvas>
 
-</td>
-</tr>
-<tr>
-    <td>
-        <table cellpadding>
-            <tr>
-                <td>
-                    <span> Protect your buildings and defeat Groudon</span>
-                    <h3>Controls</h3>
-                    <ul>
-                        <li><b>W:</b> Up</li>
-                        <li><b>S:</b> Down</li>
-                        <li><b>A:</b> Left</li>
-                        <li><b>D:</b> Right</li>
-                    </ul>
-                </td>
-            </tr>
-        </table>
-    </td>
-</tr>
-</table>
-
-
-<script>
-    let glcanvas = document.getElementById("GLCanvas1");
-    glcanvas.addEventListener("contextmenu", function(e){ e.stopPropagation(); e.preventDefault(); return false; }); //Need this to disable the menu that pops up on right clicking
-    SceneCanvas(glcanvas, "ggslac/shaders/", "ggslac/meshes/");
-    glcanvas.repaintOnInteract = false;
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table cellpadding>
+                    <tr>
+                        <td>
+                            <span> Protect your buildings and defeat Groudon</span>
+                            <h3>Controls</h3>
+                            <ul>
+                                <li><b>W:</b> Up</li>
+                                <li><b>S:</b> Down</li>
+                                <li><b>A:</b> Left</li>
+                                <li><b>D:</b> Right</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 
 
-    var timeStart = new Date().getTime();
+    <script>
+        let glcanvas = document.getElementById("GLCanvas1");
+        glcanvas.addEventListener("contextmenu", function (e) { e.stopPropagation(); e.preventDefault(); return false; }); //Need this to disable the menu that pops up on right clicking
+        SceneCanvas(glcanvas, "ggslac/shaders/", "ggslac/meshes/");
+        glcanvas.repaintOnInteract = false;
 
-    // Load the sample scene as a default
-    particles = new Particles();
-    // particles.randomlyInitSpheres(50);
-    // particles.randomlyInitBoxes(50);
-    particles.addBox([0, 0, 0], [1000, 0.1, 1000], [0, 0, 0], 0, 1, "ground");
-    particles.cow = particles.addMesh("ggslac/meshes/Arwing.off", [0, 1, -2], [0, 0, 0], 1000, 0, "green",[0,1,0,0]);
-    particles.groudon = particles.addMesh("ggslac/meshes/Groudon.off", [0, 4, -15], [0, 0, 0], 1, 1, "redambient");
-    particles.addBox([0,0.5,1],[0.5,0.5,0.5],[0,0,0], 0.1, 1, "white");
-    particles.addBox([1.25,0.5,1],[0.5,0.5,0.5],[0,0,0], 0.1, 1, "white");
-    particles.addBox([2.5,0.5,1],[0.5,0.5,0.5],[0,0,0], 0.1, 1, "white");
-    particles.addBox([-1.25,0.5,1],[0.5,0.5,0.5],[0,0,0], 0.1, 1, "white");
-    particles.addBox([-2.5,0.5,1],[0.5,0.5,0.5],[0,0,0], 0.1, 1, "white");
-    glcanvas.setupScene(particles.scene, glcanvas.clientWidth, glcanvas.clientHeight);
-    glcanvas.drawEdges = false;
-    glcanvas.updateMeshDrawings();
-    particles.setglcanvas(glcanvas);
-    particles.setupListeners();
 
-    function repaint() {
+        var timeStart = new Date().getTime();
 
-        if(particles.winCon){
-            document.getElementById('win').play();
-            alert('You Win');
-            break;
+        // Load the sample scene as a default
+        particles = new Particles();
+        // particles.randomlyInitSpheres(50);
+        // particles.randomlyInitBoxes(50);
+        particles.addBox([0, 0, 0], [1000, 0.1, 1000], [0, 0, 0], 0, 1, "ground");
+        particles.cow = particles.addMesh("ggslac/meshes/Arwing.off", [0, 1, -2], [0, 0, 0], 1000, 0, "green", [0, 1, 0, 0]);
+        particles.groudon = particles.addMesh("ggslac/meshes/Groudon.off", [0, 4, -15], [0, 0, 0], 1, 1, "redambient");
+        particles.addBox([0, 0.5, 1], [0.5, 0.5, 0.5], [0, 0, 0], 0.1, 1, "white");
+        particles.addBox([1.25, 0.5, 1], [0.5, 0.5, 0.5], [0, 0, 0], 0.1, 1, "white");
+        particles.addBox([2.5, 0.5, 1], [0.5, 0.5, 0.5], [0, 0, 0], 0.1, 1, "white");
+        particles.addBox([-1.25, 0.5, 1], [0.5, 0.5, 0.5], [0, 0, 0], 0.1, 1, "white");
+        particles.addBox([-2.5, 0.5, 1], [0.5, 0.5, 0.5], [0, 0, 0], 0.1, 1, "white");
+        glcanvas.setupScene(particles.scene, glcanvas.clientWidth, glcanvas.clientHeight);
+        glcanvas.drawEdges = false;
+        glcanvas.updateMeshDrawings();
+        particles.setglcanvas(glcanvas);
+        particles.setupListeners();
+
+        function repaint() {
+
+            if (particles.winCon) {
+                document.getElementById('win').play();
+                alert('You Win');
+            } else {
+                timeNow = new Date().getTime();
+
+                timeDiff = Math.trunc((timeNow - timeStart) / 1000.0);
+
+                particles.animate(timeDiff);
+                glcanvas.repaint();
+                requestAnimationFrame(repaint);
+            }
+
         }
-        timeNow = new Date().getTime();
 
-        timeDiff = Math.trunc((timeNow - timeStart)/1000.0);
+        requestAnimFrame(repaint);
 
-        particles.animate(timeDiff);
-        glcanvas.repaint();
-        requestAnimationFrame(repaint);
-    }
 
-    requestAnimFrame(repaint);
-    
-    
-</script>
+    </script>
 
 </body>
+
 </html>
