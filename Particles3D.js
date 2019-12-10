@@ -492,7 +492,15 @@ function Particles() {
             let sphere = this.addSphere(pos, 0.2, [0, 0, 0], 1, 0.5, "blueambient");
             // Velocity is 40 units / second in the camera's towards direction
             vec3.scale(T, T, -10);
-            sphere.body.setLinearVelocity(new Ammo.btVector3(T[0], T[1], T[2]));
+            var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+            var plusOrMinus2 = Math.random() < 0.5 ? -1 : 1;
+            var plusOrMinus3 = Math.random() < 0.5 ? -1 : 1;
+
+
+            Ran = [Math.random() * plusOrMinus,Math.random() * plusOrMinus2, -1];
+            vec3.scale(Ran, Ran, -10);
+            
+            sphere.body.setLinearVelocity(new Ammo.btVector3(Ran[0], Ran[1], Ran[2]));
             this.glcanvas.parseNode(sphere);
         }
     }
