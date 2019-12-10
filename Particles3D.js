@@ -270,11 +270,7 @@ function Particles() {
      * @param {string} material Material to use
      * @param {boolean} isLight Should it also be emitting light?
      */
-<<<<<<< HEAD
     this.addMesh = function(filename, pos, velocity, mass, restitution, material, rotation, isLight, isHidden) {
-=======
-    this.addMesh = function (filename, pos, velocity, mass, restitution, material, isLight, isHidden) {
->>>>>>> b03ae0749bd08757d8256f14d1ec5d1492861be6
         if (isLight === undefined) {
             isLight = false;
         }
